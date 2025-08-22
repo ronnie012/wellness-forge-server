@@ -18,6 +18,6 @@ A Next.js 15 app with Express.js backend and MongoDB, featuring public landing/p
 - `/kits/[id]`: Public kit details
 - `/dashboard/add-kit`: Protected form to add kit (with spinner and toast)
 
-Live Site: [Frontend on Firebase](<your-firebase-url>) | [Backend on Vercel](<your-vercel-url>)
+Live Site: 
 
 
