@@ -12,11 +12,9 @@ A Next.js 15 app with Express.js backend and MongoDB, featuring public landing/p
 4. Run locally: Frontend - `npm run dev`; Backend - `npm start`
 
 ## Route Summary
-- `/`: Landing page (Navbar, Hero, Kit Highlights, Footer)
-- `/login`: Google login, redirects to `/kits`
-- `/kits`: Public list of kits
-- `/kits/[id]`: Public kit details
-- `/dashboard/add-kit`: Protected form to add kit (with spinner and toast)
+- `/api/products`: GET - Public list of products
+- `/api/products/:id`: GET - Public product details
+- `/api/products`: POST - Protected route to add a new product
 
 Live Site: 
 

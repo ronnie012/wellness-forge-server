@@ -5,11 +5,12 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:3001', 'YOUR_VERCEL_FRONTEND_URL_HERE'];
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:3001'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -21,7 +22,9 @@ app.use(cors({
     }
     return callback(null, true);
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(bodyParser.json());
 
@@ -48,25 +51,19 @@ const Product = mongoose.model('Product', productSchema);
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Middleware to verify Google ID Token
+// Middleware to verify Google Access Token
 const authenticate = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
-    console.error('Authentication error: No token provided');
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: 'Unauthorized: No token provided' });
   }
   try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-    req.user = payload; // Attach user payload to request
-    console.log('Google ID Token verified successfully', payload.email);
+    const response = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token}`);
+    req.user = response.data;
     next();
   } catch (err) {
-    console.error('Authentication error: Invalid Google ID Token', err);
-    res.status(401).json({ error: 'Invalid token' });
+    console.error('Authentication error:', err.response?.data || err.message);
+    res.status(401).json({ error: 'Invalid token', details: err.response?.data });
   }
 };
 
