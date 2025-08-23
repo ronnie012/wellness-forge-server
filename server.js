@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 mongoose.set('bufferTimeoutMS', 30000);
 mongoose.connect(process.env.MONGODB_URI + '?connectTimeoutMS=30000&socketTimeoutMS=30000')
-  .then(() => console.log('MongoDB connected'))
+  .then(() => console.log('And Connected to MongoDB Successfully!!'))
   .catch(err => console.error('MongoDB connection error:', err));
 
 const productSchema = new mongoose.Schema({
@@ -107,5 +107,8 @@ app.post('/api/products', authenticate, async (req, res) => {
 });
 
 module.exports = app;
+
+// Gotta comment this out before deployment or the server on vercel will cause issues
+// app.listen(port, () => console.log(`Backend Server started successfully on port ${port}!`));
 
 
