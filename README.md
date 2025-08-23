@@ -16,6 +16,6 @@ A Next.js 15 app with Express.js backend and MongoDB, featuring public landing/p
 - `/api/products/:id`: GET - Public product details
 - `/api/products`: POST - Protected route to add a new product
 
-Live Site: 
+Live Server API: ![WellnessForge](https://wellness-forge-server.vercel.app/)
 
 
